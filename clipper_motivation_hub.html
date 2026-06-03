@@ -1,0 +1,240 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+.wall { background: #0a0a0a; border-radius: 16px; padding: 36px 32px; position: relative; overflow: hidden; }
+.wall::before { content: ''; position: absolute; top: -80px; right: -80px; width: 300px; height: 300px; border-radius: 50%; background: rgba(83,74,183,0.15); }
+.wall::after { content: ''; position: absolute; bottom: -60px; left: -60px; width: 220px; height: 220px; border-radius: 50%; background: rgba(29,158,117,0.10); }
+.nav { display: flex; gap: 6px; margin-bottom: 28px; position: relative; z-index: 2; flex-wrap: wrap; }
+.ntab { padding: 6px 16px; border-radius: 100px; font-size: 12px; font-weight: 700; cursor: pointer; border: 1.5px solid #2C2C2A; background: transparent; color: #888780; letter-spacing: 0.04em; }
+.ntab.on { background: #5DCAA5; color: #04342C; border-color: transparent; }
+.panel { display: none; position: relative; z-index: 1; }
+.panel.show { display: block; }
+
+.tag { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #7F77DD; margin-bottom: 16px; }
+.headline { font-size: 40px; font-weight: 900; line-height: 1.05; color: #fff; margin-bottom: 16px; }
+.headline span { color: #5DCAA5; }
+.sub { font-size: 14px; color: #888780; line-height: 1.6; max-width: 420px; margin-bottom: 24px; }
+.pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+.pill { padding: 5px 14px; border-radius: 100px; font-size: 12px; font-weight: 700; }
+.pill-p { background: #26215C; color: #AFA9EC; }
+.pill-g { background: #04342C; color: #5DCAA5; }
+.pill-a { background: #412402; color: #EF9F27; }
+.rules { display: flex; flex-direction: column; gap: 8px; }
+.rule { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #B4B2A9; }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: #5DCAA5; flex-shrink: 0; }
+
+.big-quote { font-size: 20px; font-weight: 900; color: #fff; line-height: 1.35; margin-bottom: 10px; }
+.big-quote em { color: #EF9F27; font-style: normal; }
+.attr { font-size: 11px; color: #5F5E5A; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 24px; }
+.q-btn { padding: 6px 18px; border-radius: 100px; font-size: 12px; font-weight: 700; cursor: pointer; background: #26215C; color: #AFA9EC; border: none; }
+
+.checklist { display: flex; flex-direction: column; gap: 10px; }
+.ci { display: flex; align-items: flex-start; gap: 12px; }
+.ci-dot { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.ci-text { font-size: 13px; color: #B4B2A9; line-height: 1.5; }
+.ci-text strong { color: #fff; display: block; font-size: 14px; margin-bottom: 2px; }
+
+.sl-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.sl-row label { font-size: 12px; color: #888780; width: 120px; flex-shrink: 0; }
+.sl-row input[type=range] { flex: 1; accent-color: #5DCAA5; }
+.sl-row span { font-size: 13px; font-weight: 700; color: #fff; width: 64px; text-align: right; flex-shrink: 0; }
+.metric-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 20px 0; }
+.metric { background: #141414; border-radius: 10px; padding: 12px 14px; }
+.metric-lbl { font-size: 11px; color: #5F5E5A; margin-bottom: 4px; }
+.metric-val { font-size: 22px; font-weight: 900; color: #fff; }
+.metric-sub { font-size: 11px; color: #444441; margin-top: 2px; }
+.bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.bar-lbl { font-size: 12px; color: #888780; width: 60px; flex-shrink: 0; }
+.bar-track { flex: 1; height: 6px; background: #1a1a1a; border-radius: 100px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 100px; }
+.bar-amt { font-size: 12px; font-weight: 700; color: #fff; width: 52px; text-align: right; flex-shrink: 0; }
+.win-row { display: flex; gap: 6px; margin-bottom: 20px; }
+.wtab { padding: 5px 14px; border-radius: 100px; font-size: 12px; font-weight: 700; cursor: pointer; border: 1.5px solid #2C2C2A; background: transparent; color: #888780; }
+.wtab.on { background: #04342C; color: #5DCAA5; border-color: transparent; }
+.reality-box { background: #141414; border-radius: 10px; padding: 14px; margin-top: 16px; font-size: 13px; color: #888780; line-height: 1.6; }
+
+.sched-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.scard { background: #141414; border-radius: 10px; padding: 12px 14px; }
+.scard-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 10px; border-radius: 100px; margin-bottom: 6px; }
+.scard-time { font-size: 11px; color: #5F5E5A; margin-bottom: 4px; }
+.scard-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.scard-desc { font-size: 12px; color: #888780; line-height: 1.5; }
+.divider { border: none; border-top: 1px solid #1a1a1a; margin: 20px 0; }
+</style>
+
+<div class="wall">
+  <div class="nav">
+    <div class="ntab on" onclick="go('grind',this)">Grind mode</div>
+    <div class="ntab" onclick="go('quote',this)">Quote</div>
+    <div class="ntab" onclick="go('ritual',this)">Daily ritual</div>
+    <div class="ntab" onclick="go('projection',this)">Your bag</div>
+    <div class="ntab" onclick="go('schedule',this)">Schedule</div>
+  </div>
+
+  <div class="panel show" id="p-grind">
+    <div class="tag">No days off</div>
+    <div class="headline">Keep clipping.<br><span>Keep climbing.</span></div>
+    <div class="sub">Every clip is a rep. Every post is proof. You don't wait for motivation — you build it, one upload at a time.</div>
+    <div class="pills">
+      <div class="pill pill-p">Show up daily</div>
+      <div class="pill pill-g">Volume beats perfection</div>
+      <div class="pill pill-a">Consistency is the skill</div>
+    </div>
+    <div class="rules">
+      <div class="rule"><div class="dot"></div>One clip is better than zero clips</div>
+      <div class="rule"><div class="dot"></div>Your future audience is waiting</div>
+      <div class="rule"><div class="dot"></div>Breaks are fuel, not failure</div>
+    </div>
+  </div>
+
+  <div class="panel" id="p-quote">
+    <div class="tag">Today's reminder</div>
+    <div class="big-quote" id="q-text"></div>
+    <div class="attr" id="q-attr"></div>
+    <button class="q-btn" onclick="nextQ()">Next quote ↻</button>
+  </div>
+
+  <div class="panel" id="p-ritual">
+    <div class="tag">Before you open the editor</div>
+    <div class="checklist">
+      <div class="ci"><div class="ci-dot" style="background:#26215C;color:#AFA9EC;">1</div><div class="ci-text"><strong>Watch one clip you're proud of</strong>Remind yourself you can do this.</div></div>
+      <div class="ci"><div class="ci-dot" style="background:#04342C;color:#5DCAA5;">2</div><div class="ci-text"><strong>Set one goal for today</strong>Finish the clip. Post it. Done.</div></div>
+      <div class="ci"><div class="ci-dot" style="background:#412402;color:#EF9F27;">3</div><div class="ci-text"><strong>Kill the comparison spiral</strong>Someone else blowing up means it's possible.</div></div>
+      <div class="ci"><div class="ci-dot" style="background:#4A1B0C;color:#F0997B;">4</div><div class="ci-text"><strong>Give yourself 25 minutes</strong>Just start. Motivation follows action.</div></div>
+      <div class="ci"><div class="ci-dot" style="background:#3C3489;color:#AFA9EC;">5</div><div class="ci-text"><strong>Post it anyway</strong>Perfect clips don't get posted. Posted clips get better.</div></div>
+    </div>
+  </div>
+
+  <div class="panel" id="p-projection">
+    <div class="tag">If you locked in right now</div>
+    <div class="sl-row">
+      <label>Clips per day</label>
+      <input type="range" min="1" max="6" step="1" value="3" id="sl-c">
+      <span id="o-c">3</span>
+    </div>
+    <div class="sl-row">
+      <label>Avg views per clip</label>
+      <input type="range" min="200" max="50000" step="200" value="1000" id="sl-v">
+      <span id="o-v">1,000</span>
+    </div>
+    <div class="sl-row">
+      <label>Whop rate ($/clip)</label>
+      <input type="range" min="1" max="30" step="1" value="5" id="sl-r">
+      <span id="o-r">$5</span>
+    </div>
+    <div class="win-row">
+      <div class="wtab on" onclick="setW(30,this)">Month 1</div>
+      <div class="wtab" onclick="setW(60,this)">Month 2</div>
+      <div class="wtab" onclick="setW(90,this)">Month 3</div>
+    </div>
+    <div class="metric-grid">
+      <div class="metric"><div class="metric-lbl">Clips posted</div><div class="metric-val" id="m-c">90</div><div class="metric-sub">across all platforms</div></div>
+      <div class="metric"><div class="metric-lbl">Total views</div><div class="metric-val" id="m-v">90K</div><div class="metric-sub">TikTok + YT + Shorts</div></div>
+      <div class="metric"><div class="metric-lbl">Whop earnings</div><div class="metric-val" id="m-e">$450</div><div class="metric-sub">from campaigns</div></div>
+      <div class="metric"><div class="metric-lbl">Followers gained</div><div class="metric-val" id="m-f">720</div><div class="metric-sub">est. across all</div></div>
+    </div>
+    <div class="bar-row"><div class="bar-lbl">TikTok</div><div class="bar-track"><div class="bar-fill" id="b-tt" style="background:#7F77DD;width:50%"></div></div><div class="bar-amt" id="ba-tt">45K</div></div>
+    <div class="bar-row"><div class="bar-lbl">YT Shorts</div><div class="bar-track"><div class="bar-fill" id="b-ys" style="background:#5DCAA5;width:30%"></div></div><div class="bar-amt" id="ba-ys">27K</div></div>
+    <div class="bar-row"><div class="bar-lbl">YT long</div><div class="bar-track"><div class="bar-fill" id="b-yl" style="background:#EF9F27;width:20%"></div></div><div class="bar-amt" id="ba-yl">18K</div></div>
+    <div class="reality-box" id="reality"></div>
+  </div>
+
+  <div class="panel" id="p-schedule">
+    <div class="tag">Your daily locked-in schedule</div>
+    <div class="sched-grid">
+      <div class="scard">
+        <div class="scard-badge" style="background:#26215C;color:#AFA9EC;">Morning</div>
+        <div class="scard-time">7:00 – 8:30 AM</div>
+        <div class="scard-title">Clip 1 — TikTok first</div>
+        <div class="scard-desc">Find source, cut, caption. Post to TikTok first for fastest feedback loop.</div>
+      </div>
+      <div class="scard">
+        <div class="scard-badge" style="background:#04342C;color:#5DCAA5;">Midday</div>
+        <div class="scard-time">12:00 – 1:00 PM</div>
+        <div class="scard-title">Clip 2 — Whop campaign</div>
+        <div class="scard-desc">This is your paid work. Treat it like a job — dedicated slot, no distractions.</div>
+      </div>
+      <div class="scard">
+        <div class="scard-badge" style="background:#412402;color:#EF9F27;">Evening</div>
+        <div class="scard-time">7:00 – 8:30 PM</div>
+        <div class="scard-title">Clip 3 — YouTube Shorts</div>
+        <div class="scard-desc">Repurpose or create fresh. Check today's analytics before you sleep.</div>
+      </div>
+      <div class="scard">
+        <div class="scard-badge" style="background:#3C3489;color:#AFA9EC;">Weekly</div>
+        <div class="scard-time">Sunday — 30 mins</div>
+        <div class="scard-title">Review + adjust</div>
+        <div class="scard-desc">Which clip got views? Do more of that. Cut what flopped. Repeat.</div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="rules">
+      <div class="rule"><div class="dot"></div>Post at the same time daily — the algorithm rewards routine</div>
+      <div class="rule"><div class="dot"></div>Batch clip sources on Sunday so weekdays are editing only</div>
+      <div class="rule"><div class="dot"></div>Never miss two days in a row — one off day is rest, two is a habit</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const quotes = [
+  { t: 'The algorithm doesn\'t find talent. It finds <em>consistency</em>.', a: 'Every creator who made it' },
+  { t: 'You can\'t go viral if you never post.', a: 'Simple math' },
+  { t: 'Clip 1 is embarrassing. Clip 100 is <em>your style</em>.', a: 'The process' },
+  { t: 'Nobody remembers the creators who waited until it was perfect.', a: 'Real talk' },
+  { t: 'Your worst clip posted beats your best clip saved.', a: 'The rule' },
+];
+let qi = 0;
+function showQ() {
+  document.getElementById('q-text').innerHTML = '\u201c' + quotes[qi].t + '\u201d';
+  document.getElementById('q-attr').textContent = '\u2014 ' + quotes[qi].a;
+}
+function nextQ() { qi = (qi + 1) % quotes.length; showQ(); }
+showQ();
+
+function go(name, el) {
+  document.querySelectorAll('.ntab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('show'));
+  document.getElementById('p-' + name).classList.add('show');
+}
+
+let days = 30;
+function fmt(n) {
+  if (n >= 1000000) return (n/1000000).toFixed(1) + 'M';
+  if (n >= 1000) return Math.round(n/1000) + 'K';
+  return Math.round(n).toString();
+}
+function calcProj() {
+  const c = parseInt(document.getElementById('sl-c').value);
+  const v = parseInt(document.getElementById('sl-v').value);
+  const r = parseInt(document.getElementById('sl-r').value);
+  document.getElementById('o-c').textContent = c;
+  document.getElementById('o-v').textContent = v.toLocaleString();
+  document.getElementById('o-r').textContent = '$' + r;
+  const tc = c * days;
+  const tv = tc * v;
+  const earn = tc * r;
+  const fol = Math.round(tv * 0.008);
+  document.getElementById('m-c').textContent = tc.toLocaleString();
+  document.getElementById('m-v').textContent = fmt(tv);
+  document.getElementById('m-e').textContent = '$' + earn.toLocaleString();
+  document.getElementById('m-f').textContent = fmt(fol);
+  const tt = Math.round(tv * 0.5), ys = Math.round(tv * 0.3), yl = Math.round(tv * 0.2);
+  document.getElementById('ba-tt').textContent = fmt(tt);
+  document.getElementById('ba-ys').textContent = fmt(ys);
+  document.getElementById('ba-yl').textContent = fmt(yl);
+  document.getElementById('b-tt').style.width = '50%';
+  document.getElementById('b-ys').style.width = '30%';
+  document.getElementById('b-yl').style.width = '20%';
+  document.getElementById('reality').textContent = 'At ' + c + ' clips/day for ' + days + ' days you\'ll have ' + tc + ' clips posted, ' + fmt(tv) + ' views, and $' + earn.toLocaleString() + ' earned from Whop campaigns. Most clippers quit at week 2. You\'re already there.';
+}
+function setW(d, el) {
+  days = d;
+  document.querySelectorAll('.wtab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  calcProj();
+}
+['sl-c','sl-v','sl-r'].forEach(id => document.getElementById(id).addEventListener('input', calcProj));
+calcProj();
+</script>
